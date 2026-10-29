@@ -1,0 +1,33 @@
+{
+  "name": "digital-vault-backend",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Digital Vault API (Next.js route handlers + Postgres)",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "dev": "next dev -p 4000",
+    "build": "next build",
+    "start": "node scripts/migrate.mjs && node scripts/seed-admin.mjs --if-configured && next start -p 4000",
+    "migrate": "node --env-file-if-exists=.env.local scripts/migrate.mjs",
+    "seed:admin": "node --env-file-if-exists=.env.local scripts/seed-admin.mjs",
+    "lint": "eslint",
+    "typecheck": "next typegen && tsc --noEmit"
+  },
+  "dependencies": {
+    "next": "16.4.2",
+    "pg": "^8.23.1",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@types/node": "^24.19.2",
+    "@types/pg": "^8.23.1",
+    "@types/react": "^19.3.0",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "16.4.2",
+    "typescript": "^5.9.3"
+  }
+}
