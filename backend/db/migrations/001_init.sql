@@ -1,4 +1,4 @@
--- Digital Vault schema.
+-- Crypto Ledger guard schema.
 -- Vault contents are encrypted in the browser; the server only ever stores ciphertext.
 
 -- Role used for every request that touches a member's vault. It cannot log in;

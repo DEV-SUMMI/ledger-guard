@@ -2,7 +2,7 @@
   "name": "digital-vault-frontend",
   "version": "0.1.0",
   "private": true,
-  "description": "Digital Vault web app: landing page, vault dashboard and admin panel (Next.js + Tailwind v4)",
+  "description": "Crypto Ledger guard web app: landing page, vault dashboard and admin panel (Next.js + Tailwind v4)",
   "engines": {
     "node": ">=24"
   },

@@ -1,6 +1,6 @@
 {
-  "name": "Digital Vault",
-  "short_name": "Digital Vault",
+  "name": "Crypto Ledger guard",
+  "short_name": "Crypto Ledger guard",
   "description": "Private encrypted storage for seed phrases, private keys and API keys",
   "start_url": "/dashboard",
   "scope": "/",

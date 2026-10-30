@@ -1,4 +1,4 @@
-# Digital Vault
+# Crypto Ledger guard
 
 A clone of the cryptovaultx.app landing page plus a working end-to-end-encrypted vault (login, member dashboard, admin panel).
 

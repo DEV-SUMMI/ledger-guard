@@ -29,7 +29,7 @@
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
 
-  /* Digital Vault design tokens (from cryptovaultx.app tailwind config) */
+  /* Crypto Ledger guard design tokens (from cryptovaultx.app tailwind config) */
   --color-vault-bg: #0a0a0f;
   --color-vault-card: #141418;
   --color-vault-cardHover: #18181e;

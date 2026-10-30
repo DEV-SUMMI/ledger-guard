@@ -4,10 +4,10 @@
  * including page titles, the navbar, footer and the app demo.
  */
 export const BRAND = {
-  name: "Digital Vault",
+  name: "Crypto Ledger guard",
   tagline: "A safe vault for crypto keepers and traders.",
   /** Browser tab / SEO title. */
-  title: "Digital Vault — Private Encrypted Storage for Crypto Data",
+  title: "Crypto Ledger guard — Private Encrypted Storage for Crypto Data",
   /** Meta description. */
   description:
     "Store seed phrases, private keys and API keys in an encrypted vault. Every member gets their own private dashboard.",

@@ -2,7 +2,7 @@
   "name": "digital-vault-backend",
   "version": "0.1.0",
   "private": true,
-  "description": "Digital Vault API (Next.js route handlers + Postgres)",
+  "description": "Crypto Ledger guard API (Next.js route handlers + Postgres)",
   "engines": {
     "node": ">=24"
   },

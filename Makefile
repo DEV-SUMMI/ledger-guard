@@ -1,4 +1,4 @@
-# Digital Vault: one entry point for both apps, docker and the database.
+# Crypto Ledger guard: one entry point for both apps, docker and the database.
 # Run `make` (or `make help`) to list targets.
 
 # Recipes are POSIX sh. Launched from PowerShell/cmd on Windows, make falls back to cmd.exe

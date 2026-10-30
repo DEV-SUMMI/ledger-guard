@@ -1,4 +1,4 @@
-# Digital Vault API — production image (Railway / docker compose)
+# Crypto Ledger guard API — production image (Railway / docker compose)
 FROM node:24-alpine AS deps
 WORKDIR /app
 COPY package.json package-lock.json ./
