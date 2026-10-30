@@ -25,4 +25,6 @@ USER app
 EXPOSE 4000
 # Migrations run on every start; they're idempotent and lock against concurrent runs.
 # The admin is then seeded from ADMIN_EMAIL/ADMIN_PASSWORD when set (a no-op once it exists).
-CMD ["sh", "-c", "node scripts/migrate.mjs && node scripts/seed-admin.mjs --if-configured && node server.js"]
+# Both run alongside the server rather than before it, so a sleeping or unreachable database
+# never blocks boot (or a free-tier wake-up): /api/health answers at once, DB routes fail until it's back.
+CMD ["sh", "-c", "(node scripts/migrate.mjs && node scripts/seed-admin.mjs --if-configured || echo 'startup: migrate/seed failed, serving anyway' >&2) & exec node server.js"]

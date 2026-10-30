@@ -1,0 +1,59 @@
+# Render Blueprint: the frontend and the API as two Docker web services, Postgres on Neon.
+# Free instances can't use Render's private network, so the API is public; every route except
+# /api/health rejects requests without the shared INTERNAL_API_TOKEN (sent only by the frontend proxy).
+# Migrations and the admin seed run at API start (pre-deploy commands need a paid instance).
+services:
+  - type: web
+    name: ledger-guard-api
+    runtime: docker
+    plan: free
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
+    healthCheckPath: /api/health
+    envVars:
+      - key: HOSTNAME
+        value: 0.0.0.0
+      - key: PORT
+        value: "4000"
+      # Neon pooled connection string (host contains "-pooler"), ?sslmode=require
+      - key: DATABASE_URL
+        sync: false
+      # Neon direct connection string, used only for migrations and the admin seed
+      - key: DATABASE_URL_UNPOOLED
+        sync: false
+      - key: DATABASE_SSL
+        value: require
+      - key: APP_SECRET
+        generateValue: true
+      - key: INTERNAL_API_TOKEN
+        generateValue: true
+      # The frontend's public URL, e.g. https://ledger-guard-web.onrender.com
+      - key: ALLOWED_ORIGINS
+        sync: false
+      - key: ADMIN_EMAIL
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: ADMIN_NAME
+        value: Admin
+
+  - type: web
+    name: ledger-guard-web
+    runtime: docker
+    plan: free
+    dockerfilePath: ./frontend/Dockerfile
+    dockerContext: ./frontend
+    healthCheckPath: /api/health
+    envVars:
+      - key: HOSTNAME
+        value: 0.0.0.0
+      - key: PORT
+        value: "3000"
+      # The API's public URL, e.g. https://ledger-guard-api.onrender.com
+      - key: BACKEND_URL
+        sync: false
+      - key: INTERNAL_API_TOKEN
+        fromService:
+          type: web
+          name: ledger-guard-api
+          envVarKey: INTERNAL_API_TOKEN

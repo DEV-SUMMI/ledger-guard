@@ -9,10 +9,12 @@ function getPool(): Pool {
     pool = new Pool({
       connectionString: env.databaseUrl,
       ssl: env.databaseSsl ? { rejectUnauthorized: false } : undefined,
-      max: 10,
+      // Small pool: a managed pooler (e.g. Neon's PgBouncer endpoint) multiplexes behind it
+      max: 5,
       idleTimeoutMillis: 30_000,
-      // Fail fast instead of piling up requests if the database is unreachable
-      connectionTimeoutMillis: 5_000,
+      // Fail instead of piling up requests if the database is unreachable; long enough
+      // for a serverless Postgres to wake from suspend
+      connectionTimeoutMillis: 10_000,
       statement_timeout: 10_000,
     });
   }

@@ -11,6 +11,7 @@
     "build": "next build",
     "start": "node scripts/migrate.mjs && node scripts/seed-admin.mjs --if-configured && next start -p 4000",
     "migrate": "node --env-file-if-exists=.env.local scripts/migrate.mjs",
+    "migrate:deploy": "node scripts/migrate.mjs",
     "seed:admin": "node --env-file-if-exists=.env.local scripts/seed-admin.mjs",
     "lint": "eslint",
     "typecheck": "next typegen && tsc --noEmit"

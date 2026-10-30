@@ -1,11 +1,5 @@
-import { query } from "@/lib/db";
 import { json, route } from "@/lib/http";
 
-// Public so Railway's health check can reach it; reveals nothing beyond "up".
-export const GET = route(
-  async () => {
-    await query("SELECT 1");
-    return json({ ok: true });
-  },
-  { public: true },
-);
+// Public liveness probe for the host's health check. It deliberately never touches the
+// database, so a sleeping or unreachable Postgres can't fail deploys or restart the service.
+export const GET = route(async () => json({ status: "ok" }), { public: true });
