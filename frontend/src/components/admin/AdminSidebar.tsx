@@ -15,11 +15,26 @@ const NAV: { key: AdminTab; label: string; Icon: typeof Gauge }[] = [
 interface AdminSidebarProps {
   active: AdminTab;
   onSelect: (tab: AdminTab) => void;
+  /** Mobile drawer state; ignored at `lg` and up, where the sidebar is always visible. */
+  open: boolean;
+  onClose: () => void;
 }
 
-export function AdminSidebar({ active, onSelect }: AdminSidebarProps) {
+export function AdminSidebar({ active, onSelect, open, onClose }: AdminSidebarProps) {
   return (
-    <aside className="hidden lg:flex lg:flex-col w-[232px] shrink-0 border-r border-vault-border bg-vault-card/40 sticky top-0 h-screen px-4 py-6">
+    <>
+    <div
+      onClick={onClose}
+      aria-hidden
+      className={cn("fixed inset-0 z-40 bg-black/60 backdrop-blur-sm transition-opacity lg:hidden", open ? "opacity-100" : "pointer-events-none opacity-0")}
+    />
+    <aside
+      className={cn(
+        "flex flex-col w-[232px] shrink-0 border-r border-vault-border bg-vault-bg px-4 py-6 overflow-y-auto",
+        "fixed inset-y-0 left-0 z-50 transition-transform duration-200 lg:sticky lg:top-0 lg:h-screen lg:z-auto lg:translate-x-0 lg:bg-vault-card/40",
+        open ? "translate-x-0" : "-translate-x-full",
+      )}
+    >
       <Link href="/" className="flex items-center gap-2.5 px-2 mb-2">
         <span className="text-vault-accent">
           <LogoIcon size={24} />
@@ -35,7 +50,10 @@ export function AdminSidebar({ active, onSelect }: AdminSidebarProps) {
         {NAV.map(({ key, label, Icon }) => (
           <button
             key={key}
-            onClick={() => onSelect(key)}
+            onClick={() => {
+              onSelect(key);
+              onClose();
+            }}
             className={cn(
               "flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-colors text-left",
               active === key ? "bg-vault-accent/10 text-vault-accent" : "text-zinc-500 hover:text-white hover:bg-white/[0.04]",
@@ -61,5 +79,6 @@ export function AdminSidebar({ active, onSelect }: AdminSidebarProps) {
         <SignOutButton className="-mt-3" />
       </div>
     </aside>
+    </>
   );
 }

@@ -1,8 +1,9 @@
 "use client";
 
-import { Download, RefreshCw } from "lucide-react";
+import { Download, Menu, RefreshCw } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { AdminSidebar } from "@/components/admin/AdminSidebar";
+import { SignOutButton } from "@/components/auth/SignOutButton";
 import { AuditLog } from "@/components/admin/AuditLog";
 import { MetricCards } from "@/components/admin/MetricCards";
 import { UserDetailPanel } from "@/components/admin/UserDetailPanel";
@@ -10,12 +11,6 @@ import { UsersTable } from "@/components/admin/UsersTable";
 import { api } from "@/lib/api";
 import { cn } from "@/lib/utils";
 import type { AdminMetrics, AdminTab, AdminUser, AdminUserDetail, AuditEvent } from "@/types/admin";
-
-const TABS: { key: AdminTab; label: string }[] = [
-  { key: "overview", label: "Overview" },
-  { key: "users", label: "Users" },
-  { key: "audit", label: "Audit log" },
-];
 
 const TITLES: Record<AdminTab, { title: string; subtitle: string }> = {
   overview: { title: "Overview", subtitle: "System health and growth at a glance." },
@@ -62,6 +57,7 @@ export function AdminShell({ adminId }: { adminId: string }) {
   const [detailOpen, setDetailOpen] = useState(false);
   const [detailLoading, setDetailLoading] = useState(false);
   const [detailError, setDetailError] = useState<string | null>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
   const { title, subtitle } = TITLES[tab];
 
   const openDetail = useCallback(async (user: AdminUser) => {
@@ -110,27 +106,15 @@ export function AdminShell({ adminId }: { adminId: string }) {
 
   return (
     <div className="min-h-screen bg-vault-bg text-vault-text flex">
-      <AdminSidebar active={tab} onSelect={setTab} />
+      <AdminSidebar active={tab} onSelect={setTab} open={menuOpen} onClose={() => setMenuOpen(false)} />
 
       <main className="flex-1 min-w-0 flex flex-col">
         <header className="sticky top-0 z-30 bg-vault-bg/80 backdrop-blur-xl border-b border-vault-border px-5 sm:px-8 py-4">
-          {/* Mobile tab switcher */}
-          <div className="lg:hidden flex gap-1 bg-black/20 rounded-lg p-1 mb-1 w-full overflow-x-auto scrollbar-hide">
-            {TABS.map((t) => (
-              <button
-                key={t.key}
-                onClick={() => setTab(t.key)}
-                className={cn(
-                  "flex-1 whitespace-nowrap px-3 py-1.5 rounded-md text-[12px] font-bold transition-all",
-                  tab === t.key ? "bg-vault-accent/15 text-vault-accent" : "text-zinc-500",
-                )}
-              >
-                {t.label}
-              </button>
-            ))}
-          </div>
           <div className="flex items-center justify-between gap-3">
-            <div>
+            <button onClick={() => setMenuOpen(true)} className="lg:hidden p-2 -ml-2 text-zinc-400" aria-label="Menu" aria-expanded={menuOpen}>
+              <Menu size={20} />
+            </button>
+            <div className="mr-auto">
               <h1 className="text-xl font-extrabold text-white tracking-tight">{title}</h1>
               <p className="text-[13px] text-vault-textMuted mt-0.5 hidden sm:block">{subtitle}</p>
             </div>
@@ -151,6 +135,7 @@ export function AdminShell({ adminId }: { adminId: string }) {
                 <Download size={15} />
                 <span className="hidden sm:inline">Export users</span>
               </button>
+              <SignOutButton compact className="lg:hidden" />
             </div>
           </div>
         </header>

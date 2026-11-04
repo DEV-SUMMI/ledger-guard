@@ -25,6 +25,7 @@ export function DashboardShell({ user }: { user: SessionUser }) {
   const [query, setQuery] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     if (!vaultKey) return;
@@ -67,12 +68,12 @@ export function DashboardShell({ user }: { user: SessionUser }) {
 
   return (
     <div className="min-h-screen bg-vault-bg text-vault-text flex">
-      <Sidebar active={active} counts={counts} onSelect={setActive} total={total} />
+      <Sidebar active={active} counts={counts} onSelect={setActive} total={total} open={menuOpen} onClose={() => setMenuOpen(false)} />
 
       <main className="flex-1 min-w-0 flex flex-col">
         {/* Top bar */}
         <header className="sticky top-0 z-30 bg-vault-bg/80 backdrop-blur-xl border-b border-vault-border px-5 sm:px-8 py-4 flex items-center gap-3">
-          <button className="lg:hidden p-2 -ml-2 text-zinc-400" aria-label="Menu">
+          <button onClick={() => setMenuOpen(true)} className="lg:hidden p-2 -ml-2 text-zinc-400" aria-label="Menu" aria-expanded={menuOpen}>
             <Menu size={20} />
           </button>
           <div className="relative flex-1 max-w-[420px]">
