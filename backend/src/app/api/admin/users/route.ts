@@ -7,6 +7,7 @@ export const GET = route(async (req) => {
   await requireAdmin(req);
   const users = await query(
     `SELECT u.id, u.name, u.email, u.role, u.status,
+            u.balance_cents::float8 AS "balanceCents",
             u.created_at AS "createdAt", u.last_active_at AS "lastActiveAt",
             (SELECT count(*)::int FROM vault_items v WHERE v.owner_id = u.id) AS items
        FROM users u

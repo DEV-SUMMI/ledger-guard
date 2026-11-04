@@ -7,6 +7,7 @@ import { SignOutButton } from "@/components/auth/SignOutButton";
 import { AuditLog } from "@/components/admin/AuditLog";
 import { MetricCards } from "@/components/admin/MetricCards";
 import { UserDetailPanel } from "@/components/admin/UserDetailPanel";
+import { WithdrawalsPanel } from "@/components/admin/WithdrawalsPanel";
 import { UsersTable } from "@/components/admin/UsersTable";
 import { api } from "@/lib/api";
 import { cn } from "@/lib/utils";
@@ -15,6 +16,7 @@ import type { AdminMetrics, AdminTab, AdminUser, AdminUserDetail, AuditEvent } f
 const TITLES: Record<AdminTab, { title: string; subtitle: string }> = {
   overview: { title: "Overview", subtitle: "System health and growth at a glance." },
   users: { title: "Users", subtitle: "Manage accounts and access." },
+  withdrawals: { title: "Withdrawals", subtitle: "Review and fulfil members' withdrawal requests." },
   audit: { title: "Audit log", subtitle: "Security-relevant events across the platform." },
 };
 
@@ -163,6 +165,7 @@ export function AdminShell({ adminId }: { adminId: string }) {
                 </div>
               )}
               {tab === "users" && <UsersTable users={data.users} adminId={adminId} onChanged={refresh} onSelect={openDetail} />}
+              {tab === "withdrawals" && <WithdrawalsPanel />}
               {tab === "audit" && <AuditLog events={data.events} />}
             </>
           )}

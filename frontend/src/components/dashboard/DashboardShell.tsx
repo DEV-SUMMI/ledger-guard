@@ -3,6 +3,8 @@
 import { Menu, Plus, Search } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { SignOutButton } from "@/components/auth/SignOutButton";
+import { BalanceCard } from "@/components/dashboard/BalanceCard";
+import { WithdrawModal } from "@/components/dashboard/WithdrawModal";
 import { AddItemModal } from "@/components/dashboard/AddItemModal";
 import { ProfileModal } from "@/components/dashboard/ProfileModal";
 import { SeedWalletGrid } from "@/components/dashboard/SeedWalletGrid";
@@ -10,6 +12,7 @@ import { Sidebar } from "@/components/dashboard/Sidebar";
 import { StatRow } from "@/components/dashboard/StatRow";
 import { UnlockVault } from "@/components/dashboard/UnlockVault";
 import { VaultItemCard } from "@/components/dashboard/VaultItemCard";
+import { api } from "@/lib/api";
 import { getVaultKey } from "@/lib/vault-key";
 import { loadVault, type Vault } from "@/lib/vault-client";
 import { CATEGORY_LABEL } from "@/lib/vault-data";
@@ -26,6 +29,9 @@ export function DashboardShell({ user }: { user: SessionUser }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [balanceCents, setBalanceCents] = useState<number | null>(null);
+  const [balanceError, setBalanceError] = useState(false);
+  const [withdrawOpen, setWithdrawOpen] = useState(false);
 
   useEffect(() => {
     if (!vaultKey) return;
@@ -38,6 +44,17 @@ export function DashboardShell({ user }: { user: SessionUser }) {
       cancelled = true;
     };
   }, [vaultKey]);
+
+  useEffect(() => {
+    let cancelled = false;
+    api<{ balanceCents: number }>("/balance").then(
+      (b) => !cancelled && setBalanceCents(b.balanceCents),
+      () => !cancelled && setBalanceError(true),
+    );
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const keys = useMemo(() => vault?.keys ?? [], [vault]);
   const seeds = useMemo(() => vault?.seeds ?? [], [vault]);
@@ -114,6 +131,8 @@ export function DashboardShell({ user }: { user: SessionUser }) {
             <p className="text-sm text-vault-textMuted mt-1">Your encrypted vault — seed phrases, private keys and API keys in one place.</p>
           </div>
 
+          <BalanceCard balanceCents={balanceCents} error={balanceError} onWithdraw={() => setWithdrawOpen(true)} />
+
           <StatRow total={total} seeds={seeds.length} keys={keys.length} lastUpdated={lastUpdated} />
 
           {loadError ? (
@@ -173,7 +192,11 @@ export function DashboardShell({ user }: { user: SessionUser }) {
         />
       )}
 
-      {profileOpen && <ProfileModal onClose={() => setProfileOpen(false)} />}
+      {withdrawOpen && balanceCents !== null && (
+        <WithdrawModal balanceCents={balanceCents} onRequested={setBalanceCents} onClose={() => setWithdrawOpen(false)} />
+      )}
+
+      {profileOpen &&<ProfileModal onClose={() => setProfileOpen(false)} />}
     </div>
   );
 }

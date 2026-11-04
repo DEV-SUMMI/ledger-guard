@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Activity, ArrowLeft, Gauge, ShieldAlert, Users } from "lucide-react";
+import { Activity, ArrowLeft, Banknote, Gauge, ShieldAlert, Users } from "lucide-react";
 import { SignOutButton } from "@/components/auth/SignOutButton";
 import { LogoIcon } from "@/components/icons";
 import { BRAND } from "@/lib/brand";
@@ -9,6 +9,7 @@ import type { AdminTab } from "@/types/admin";
 const NAV: { key: AdminTab; label: string; Icon: typeof Gauge }[] = [
   { key: "overview", label: "Overview", Icon: Gauge },
   { key: "users", label: "Users", Icon: Users },
+  { key: "withdrawals", label: "Withdrawals", Icon: Banknote },
   { key: "audit", label: "Audit log", Icon: ShieldAlert },
 ];
 

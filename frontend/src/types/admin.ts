@@ -17,6 +17,8 @@ export interface AdminUser {
 /** Single-account detail from /api/admin/users/:id. The profile note is an openly
  *  admin-visible, non-secret field the member sets themselves — not vault contents. */
 export interface AdminUserDetail extends AdminUser {
+  /** Dollar balance in cents; only admins can change it. */
+  balanceCents: number;
   profileNote: string;
 }
 
@@ -38,4 +40,17 @@ export interface AuditEvent {
   createdAt: string;
 }
 
-export type AdminTab = "overview" | "users" | "audit";
+export type AdminTab = "overview" | "users" | "withdrawals" | "audit";
+
+export type WithdrawalStatus = "pending" | "fulfilled" | "rejected";
+
+export interface AdminWithdrawal {
+  id: string;
+  userId: string;
+  name: string;
+  email: string;
+  amountCents: number;
+  status: WithdrawalStatus;
+  createdAt: string;
+  resolvedAt: string | null;
+}

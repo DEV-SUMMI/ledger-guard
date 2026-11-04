@@ -18,3 +18,10 @@ export function timeAgo(iso: string | null | undefined): string {
   }
   return "just now";
 }
+
+const usdFormat = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" });
+
+/** Formats an integer number of cents as dollars, e.g. 123456 → "$1,234.56". */
+export function formatUsd(cents: number): string {
+  return usdFormat.format(cents / 100);
+}

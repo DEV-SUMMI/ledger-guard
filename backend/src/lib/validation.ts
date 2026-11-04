@@ -56,3 +56,21 @@ export const userStatusSchema = z.object({ status: z.enum(["active", "suspended"
 export const profileSchema = z.object({ profileNote: z.string().max(500) });
 
 export const uuidParam = z.uuid();
+
+/** Admin balance change: a positive dollar amount (max 2 decimals) to add or subtract. */
+export const balanceAdjustSchema = z.object({
+  operation: z.enum(["increase", "decrease"]),
+  amount: z
+    .string()
+    .regex(/^\d{1,9}(\.\d{1,2})?$/)
+    .refine((v) => Number(v) > 0),
+});
+
+const dollarAmount = z
+  .string()
+  .regex(/^\d{1,9}(\.\d{1,2})?$/)
+  .refine((v) => Number(v) > 0);
+
+export const withdrawalCreateSchema = z.object({ amount: dollarAmount });
+
+export const withdrawalResolveSchema = z.object({ status: z.enum(["fulfilled", "rejected"]) });

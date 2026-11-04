@@ -2,6 +2,7 @@
 
 import { ShieldCheck, X } from "lucide-react";
 import { useEffect } from "react";
+import { BalanceControl } from "@/components/admin/BalanceControl";
 import { MemberVault } from "@/components/admin/MemberVault";
 import { StatusBadge } from "@/components/admin/StatusBadge";
 import { timeAgo } from "@/lib/format";
@@ -90,6 +91,8 @@ export function UserDetailPanel({ user, loading, error, onClose }: UserDetailPan
               <Field label="Joined" value={timeAgo(user.createdAt)} />
               <Field label="Last active" value={timeAgo(user.lastActiveAt)} />
             </div>
+
+            <BalanceControl key={user.id} userId={user.id} initialCents={user.balanceCents} />
 
             {/* Profile note — the openly admin-visible, member-written field */}
             <div>

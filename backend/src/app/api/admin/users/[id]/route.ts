@@ -15,6 +15,7 @@ interface AdminUserDetail {
   role: string;
   status: string;
   profileNote: string;
+  balanceCents: number;
   items: number;
   createdAt: string;
   lastActiveAt: string | null;
@@ -33,7 +34,7 @@ export const GET = route<Ctx>(async (req, ctx) => {
 
   const rows = await query<AdminUserDetail>(
     `SELECT u.id, u.name, u.email, u.role, u.status,
-            u.profile_note AS "profileNote",
+            u.profile_note AS "profileNote", u.balance_cents::float8 AS "balanceCents",
             u.created_at AS "createdAt", u.last_active_at AS "lastActiveAt",
             (SELECT count(*)::int FROM vault_items v WHERE v.owner_id = u.id) AS items
        FROM users u
