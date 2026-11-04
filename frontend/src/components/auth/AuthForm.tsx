@@ -1,6 +1,7 @@
 "use client";
 
-import { AlertCircle, Eye, EyeOff, LoaderCircle, Lock, Mail, User } from "lucide-react";
+import { AlertCircle, ArrowLeft, Eye, EyeOff, LoaderCircle, Lock, Mail, User } from "lucide-react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useId, useState } from "react";
 import { homeFor, signIn, signUp } from "@/lib/auth-client";
@@ -80,11 +81,17 @@ export function AuthForm() {
 
   return (
     <div className="w-full max-w-[400px]">
-      <div className="lg:hidden flex items-center gap-2.5 mb-8">
-        <span className="text-vault-accent">
-          <Lock size={22} />
-        </span>
-        <span className="text-lg font-extrabold text-white tracking-tight">Welcome</span>
+      <div className="lg:hidden flex items-center justify-between mb-8">
+        <div className="flex items-center gap-2.5">
+          <span className="text-vault-accent">
+            <Lock size={22} />
+          </span>
+          <span className="text-lg font-extrabold text-white tracking-tight">Welcome</span>
+        </div>
+        <Link href="/" className="flex items-center gap-1.5 text-[13px] text-zinc-500 hover:text-white transition-colors">
+          <ArrowLeft size={14} />
+          Back to home
+        </Link>
       </div>
 
       <h1 className="text-2xl font-extrabold text-white tracking-tight mb-1">
